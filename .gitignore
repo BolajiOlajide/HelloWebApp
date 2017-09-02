@@ -2,3 +2,6 @@ db.sqlite3
 *.pyc
 __pycache__/
 .env
+
+# Ignore migrations
+collection/migrations/

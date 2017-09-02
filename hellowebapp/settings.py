@@ -12,26 +12,31 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import dotenv
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+dotenv.load()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'e+kxmt#_llue7*qjjr)8rh%70526j*=#p$^8ckfk07$!!flm4#'
+SECRET_KEY = dotenv.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'collection',
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -76,8 +81,12 @@ WSGI_APPLICATION = 'hellowebapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': dotenv.get('DATABASE_NAME'),
+        'USER': dotenv.get('DATABASE_USER'),
+        'PASSWORD': dotenv.get('DATABASE_PASSWORD'),
+        'HOST': dotenv.get('DATABASE_HOST'),
+        'PORT': dotenv.get('DATABASE_PORT'),
     }
 }
 
@@ -119,3 +128,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Number of days a user's account must be activated
+ACCOUNT_ACTIVATION_DAYS = 3
+
+# The email settings for sending mail from the Django Backend
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'no-reply@resourceapp.com'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+EMAIL_PORT = 1025
+
+# URL we'd like to redirect to after registration is done
+LOGIN_REDIRECT_URL = 'home'

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import render, redirect
+from django.template.defaultfilters import slugify
 
 from collection.forms import ResourceForm
 from collection.models import Resources
@@ -47,5 +48,36 @@ def edit_resource(request, slug):
     # and render the template
     return render(request, 'resources/edit_resource.html', {
         'resource': resource,
+        'form': form,
+    })
+
+# add below your edit_thing view
+def create_resource(request):
+    form_class = ResourceForm
+
+    # if we're coming from a submitted form, do this
+    if request.method == 'POST':
+        # grab the data from the submitted form and
+        # apply to the form
+        form = form_class(request.POST)
+        if form.is_valid():
+            # create an instance but don't save yet
+            resource = form.save(commit=False)
+
+            # set the additional details
+            resource.user = request.user
+            resource.slug = slugify(resource.name)
+
+            # save the object
+            resource.save()
+
+            # redirect to our newly created thing
+            return redirect('resource_detail', slug=resource.slug)
+
+    # otherwise just create the form
+    else:
+        form = form_class()
+
+    return render(request, 'resources/create_resource.html', {
         'form': form,
     })

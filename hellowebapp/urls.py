@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^contact/$', 
         TemplateView.as_view(template_name='contact.html'),
         name='contact'),
+    url(r'^resource/(?P<slug>[-\w]+)/$', views.resource_detail, 
+        name='resource_detail'),
     url(r'^admin/', admin.site.urls),
 ]

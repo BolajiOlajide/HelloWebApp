@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ resource.name }} - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+     <div class="card w-50">
+		  <div class="card-block">
+		    <h3 class="card-title">{{ resource.name }}</h3>
+		    <p class="card-text">{{ resource.description }}</p>
+		    <a href="{{resource.url}}" class="btn btn-primary">Visit {{ resource.name }}</a>
+		  </div>
+		</div>
+{% endblock content %}

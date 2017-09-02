@@ -6,5 +6,9 @@
 {% block content %}
     <h1>Hello World!</h1>
     <p>I am a basic website. {{ name }}</p>
-    <p> {{now}} </p>
+   <ul class="list-group">
+    {% for resource in resources %}
+		<li class="list-group-item"><a href="{% url 'resource_detail' slug=resource.slug %}">{{resource.name}}</a></li>
+    {% endfor %}
+	</ul>
 {% endblock content %}

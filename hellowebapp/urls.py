@@ -32,5 +32,9 @@ urlpatterns = [
         name='contact'),
     url(r'^resource/(?P<slug>[-\w]+)/$', views.resource_detail, 
         name='resource_detail'),
+    # new line we're adding!
+    url(r'^resource/(?P<slug>[-\w]+)/edit/$', 
+        views.edit_resource,
+        name='edit_resource'),
     url(r'^admin/', admin.site.urls),
 ]

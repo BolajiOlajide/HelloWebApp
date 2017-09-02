@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from collection.forms import ResourceForm
 from collection.models import Resources
 
 # Create your views here.
@@ -22,4 +23,29 @@ def resource_detail(request, slug):
     # and pass to the template
     return render(request, 'resources/resource_detail.html', {
         'resource': resource,
+    })
+
+def edit_resource(request, slug):
+    # grab the object
+    resource = Resources.objects.get(slug=slug)
+    # set the form we're using
+    form_class = ResourceForm
+
+    # if we're coming to this view from a submitted form
+    if request.method == 'POST':
+        # grab the data from the submitted form and apply to
+        # the form
+        form = form_class(data=request.POST, instance=resource)
+        if form.is_valid():
+            # save the new data
+            form.save()
+            return redirect('resource_detail', slug=resource.slug)
+    # otherwise just create the form
+    else:
+        form = form_class(instance=resource)
+
+    # and render the template
+    return render(request, 'resources/edit_resource.html', {
+        'resource': resource,
+        'form': form,
     })
